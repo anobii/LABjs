@@ -2,7 +2,10 @@
     v2.0.3 (c) Kyle Simpson
     MIT License
 */
-
+/*!
+	Manual Cache Buster Parameter Variant
+	Alex Chittock for Anobii.com
+*/
 (function(global){
 	var _$LAB = global.$LAB,
 	
@@ -11,6 +14,7 @@
 		_AlwaysPreserveOrder = "AlwaysPreserveOrder",
 		_AllowDuplicates = "AllowDuplicates",
 		_CacheBust = "CacheBust",
+		_CacheBustKey = "CacheBustKey",
 		/*!START_DEBUG*/_Debug = "Debug",/*!END_DEBUG*/
 		_BasePath = "BasePath",
 		
@@ -206,6 +210,7 @@
 		global_defaults[_AlwaysPreserveOrder] = false;
 		global_defaults[_AllowDuplicates] = false;
 		global_defaults[_CacheBust] = false;
+		global_defaults[_CacheBustKey] = false;
 		/*!START_DEBUG*/global_defaults[_Debug] = false;/*!END_DEBUG*/
 		global_defaults[_BasePath] = "";
 
@@ -260,7 +265,7 @@
 			script_obj.src = canonical_uri(script_obj.src,chain_opts[_BasePath]);
 			script_obj.real_src = script_obj.src + 
 				// append cache-bust param to URL?
-				(chain_opts[_CacheBust] ? ((/\?.*$/.test(script_obj.src) ? "&_" : "?_") + ~~(Math.random()*1E9) + "=") : "")
+				(chain_opts[_CacheBust] ? ((/\?.*$/.test(script_obj.src) ? "&_" : "?_") + (chain_opts[_CacheBustKey] ? chain_opts[_CacheBustKey] : ~~(Math.random()*1E9)) + "=") : "")
 			;
 			
 			if (!registry[script_obj.src]) registry[script_obj.src] = {items:[],finished:false};
